@@ -1,4 +1,4 @@
-export interface ShortPostResponseDto {
+export interface PostResponseDto {
   _id: string
   title: string
   description: string
@@ -10,6 +10,6 @@ export interface ShortPostResponseDto {
   authorName: string
 }
 
-export interface DetailedPostResponseDto extends ShortPostResponseDto {
+export interface DetailedPostResponseDto extends PostResponseDto {
   content: string
 }

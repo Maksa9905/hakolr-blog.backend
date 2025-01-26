@@ -14,4 +14,4 @@ export const postSchema = new Schema({
 })
 
 export const postModel =
-  models.postModel<PostModel> || model<PostModel>('Post', postSchema)
+  models.Post<PostModel> || model<PostModel>('Post', postSchema)
