@@ -1,4 +1,3 @@
-import form_controller from './post-controller'
-export * from './types'
+import PostsController from './posts.controller'
 
-export default form_controller
+export default PostsController

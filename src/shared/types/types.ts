@@ -1,3 +1,5 @@
+import { z } from 'zod'
+
 export type WithPagination<T, Multitle extends boolean = true> = {
   data: Multitle extends true ? T[] : T
   total: number
@@ -17,3 +19,5 @@ export type ListResponseFormat<
   T,
   Multitle extends boolean = true,
 > = WithPagination<MongoDocument<T>, Multitle>
+
+export const idSchema = z.string().length(24)
