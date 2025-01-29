@@ -12,11 +12,24 @@ class AuthController {
     const token = await AuthService.login(req.body)
 
     if (token) {
-      res.send({ success: 'Successfully logged in', token })
+      res.cookie('Authorization', token)
+      res.send({ success: 'Successfully logged in' })
       return
     }
 
-    res.status(401).send({ success: 'Login failed', token: null })
+    res.status(401).send({ success: 'Login failed' })
+  }
+
+  static verify_token = async (req: Request, res: Response) => {
+    const token = req.cookies['Authorization']
+
+    const verified = await AuthService.validate_token(token)
+
+    if (verified) {
+      res.status(200).send({ success: 'Authorized' })
+    } else {
+      res.status(401).send({ success: 'Unauthorized' })
+    }
   }
 
   static register = ControllerUtils.create(

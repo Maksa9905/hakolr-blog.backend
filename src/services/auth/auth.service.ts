@@ -3,6 +3,7 @@ import { CreateUserDto } from '#dtos/user'
 import { TokenData } from '#models/auth'
 import { userModel } from '#models/user'
 import { dayMilliseconds } from '#shared/lib/consts.ts'
+import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
 
@@ -26,21 +27,14 @@ class AuthService {
     } else return null
   }
 
-  static validate_token = async (req, res, next) => {
-    const tokenHeaderKey = process.env.TOKEN_HEADER_KEY!
+  static validate_token = async (token: string) => {
     const jwtSecretKey = process.env.JWT_SECRET_KEY
 
-    const authHeader = req.header(tokenHeaderKey!)
-
-    if (!authHeader) {
-      return res
-        .status(401)
-        .send({ success: 'Token is not found', token: null })
+    if (!token) {
+      return false
     }
 
     try {
-      const token = req.header(tokenHeaderKey)
-
       const verified = jwt.verify(token, jwtSecretKey)
 
       if (verified) {
@@ -50,13 +44,13 @@ class AuthService {
         const now = new Date()
 
         if (loggedDate.getTime() - now.getTime() < 2 * dayMilliseconds) {
-          return next('route')
+          return true
         }
       }
 
-      return res.status(401).send('Invalid Token')
+      return false
     } catch (error) {
-      return res.status(401).send(error)
+      return false
     }
   }
 

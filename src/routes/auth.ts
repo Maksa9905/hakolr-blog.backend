@@ -7,7 +7,8 @@ const auth = express.Router()
 
 const jsonParser = bodyParser.json()
 
-auth.post('/login', jsonParser, AuthController.login)
-auth.post('/register', jsonParser, AuthController.register)
+auth.post('/api/login', jsonParser, AuthController.login)
+auth.post('/api/verify_token', AuthController.verify_token)
+auth.post('/api/register', jsonParser, AuthController.register)
 
 export default auth
