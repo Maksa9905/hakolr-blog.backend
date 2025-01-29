@@ -1,4 +1,4 @@
-import { PostModel } from '#entities/post/model.ts'
+import { postModel } from "#models/posts"
 const dot_env = require('dotenv').config()
 
 const mongoose = require('mongoose')
@@ -9,7 +9,7 @@ async function migrate() {
   try {
     await mongoose.connect(databaseURI)
 
-    const documents = await PostModel.find()
+    const documents = await postModel.find()
 
     for (const doc of documents) {
       const updatedDoc = {
@@ -24,7 +24,7 @@ async function migrate() {
         authorName: doc.authorName,
       }
 
-      await PostModel.updateOne({ _id: doc._id }, updatedDoc)
+      await postModel.updateOne({ _id: doc._id }, updatedDoc)
     }
 
     console.log('Migration completed!')
