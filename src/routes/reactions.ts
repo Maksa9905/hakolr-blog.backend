@@ -1,8 +1,11 @@
 import express from 'express'
 import AuthService from '#services/auth'
-import UserController from '#controllers/users'
+import ReactionsController from '#controllers/reactions/reactions.controller.js'
 
 const router = express.Router()
+const bodyParser = require('body-parser')
+
+const jsonParser = bodyParser.json()
 
 router.use(async (req, res, next) => {
   const token = req.headers.authorization
@@ -21,6 +24,9 @@ router.use(async (req, res, next) => {
   return
 })
 
-router.get('/api/user/info', UserController.get_user)
+router.get('/api/reactions', ReactionsController.get_reactions)
+router.post('/api/reactions', jsonParser, ReactionsController.create_reaction)
+router.put('/api/reactions/:id', jsonParser, ReactionsController.edit_reaction)
+router.delete('/api/reactions/:id', ReactionsController.delete_reaction)
 
 export default router

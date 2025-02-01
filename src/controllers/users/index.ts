@@ -1,3 +1,3 @@
-import create_user from './users.controller'
+import UserController from './users.controller'
 
-export default create_user
+export default UserController

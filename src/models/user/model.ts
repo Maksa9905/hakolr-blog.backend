@@ -7,5 +7,11 @@ export const userSchema = new Schema({
   password: String,
 })
 
+userSchema.virtual('posts', {
+  ref: 'Post',
+  localField: '_id',
+  foreignField: 'authorId',
+})
+
 export const userModel =
-  models.userModel<UserModel> || model('userModel', userSchema)
+  models.userModel<UserModel> || model('User', userSchema)

@@ -119,4 +119,46 @@ export class ControllerUtils {
       return
     }
   }
+
+  static update = <CreateDto, ResponseDto, TSchema>(
+    serviceMethod: (
+      id: string,
+      data: CreateDto,
+    ) => Promise<MongoDocument<ResponseDto>>,
+    resolver?: ZodSchema<TSchema>,
+  ) => {
+    return async <
+      Params,
+      ResBody = any,
+      ReqBody = any,
+      RequestQuery = qs.ParsedQs,
+      Locals extends Record<string, any> = Record<string, any>,
+    >(
+      req: Request<
+        { id: string },
+        ResponseDto,
+        CreateDto,
+        RequestQuery,
+        Locals
+      >,
+      res: Response<MongoDocument<ResponseDto> | string, Locals>,
+    ) => {
+      if (!resolver) {
+        const response = await serviceMethod(req.params.id, req.body)
+        res.send(response)
+        return
+      }
+
+      const validation = resolver.safeParse(req.body)
+
+      if (validation.error) {
+        res.status(400).send(JSON.parse(validation.error.message))
+        return
+      }
+
+      const response = await serviceMethod(req.params.id, req.body)
+      res.send(response)
+      return
+    }
+  }
 }

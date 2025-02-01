@@ -1,3 +1,3 @@
 export { postSchema, postModel } from './model'
 
-export type { PostModel } from './types'
+export type { PostModel, PopulatedPostModel } from './types'
