@@ -32,6 +32,7 @@ export class ControllerUtils {
 
       const response = await serviceMethod(req.body)
       res.send(response)
+      return
     }
   }
 
@@ -63,6 +64,7 @@ export class ControllerUtils {
 
       const response = await serviceMethod(req.query)
       res.send(response)
+      return
     }
   }
 
@@ -88,6 +90,7 @@ export class ControllerUtils {
       }
 
       res.send(response)
+      return
     }
   }
 
@@ -113,6 +116,7 @@ export class ControllerUtils {
       }
 
       res.send(response)
+      return
     }
   }
 }
