@@ -19,10 +19,12 @@ const app = express()
 if (databaseURI) {
   mongoose.connect(databaseURI)
 
-  app.use(cors({
-    credentials: true,
-    origin: 'http://localhost:3000'
-  }))
+  app.use(
+    cors({
+      credentials: true,
+      origin: 'http://localhost:3000',
+    }),
+  )
   app.use(cookieParser(cookieSecretKey))
 
   app.use(auth_router)

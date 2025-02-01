@@ -21,14 +21,21 @@ class AuthController {
   }
 
   static verify_token = async (req: Request, res: Response) => {
-    const token = req.cookies['Authorization']
+    const token = req.headers.authorization
 
+    if (!token) {
+      res.status(401).send({ success: 'Unauthorized' })
+      return
+    }
+  
     const verified = await AuthService.validate_token(token)
 
     if (verified) {
       res.status(200).send({ success: 'Authorized' })
+      return
     } else {
       res.status(401).send({ success: 'Unauthorized' })
+      return
     }
   }
 

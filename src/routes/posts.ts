@@ -8,15 +8,20 @@ const bodyParser = require('body-parser')
 const jsonParser = bodyParser.json()
 
 router.use(async (req, res, next) => {
-    const token = req.cookies['Authorization']
+    const token = req.headers.authorization
+
     if (token) {
         const verified = await AuthService.validate_token(token)
         if (verified) {
-            next()
+            next('route')
+            return
         } else {
             res.status(401).send({ success: 'Unauthorized' })
+            return
         }
     }
+    res.status(401).send({ success: 'Unauthorized' })
+    return
 })
 
 router.get('/api/posts', PostsController.get_posts)
