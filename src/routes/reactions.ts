@@ -25,7 +25,7 @@ router.use(async (req, res, next) => {
 })
 
 router.get('/api/reactions', ReactionsController.get_reactions)
-router.post('/api/reactions', jsonParser, ReactionsController.create_reaction)
+router.post('/api/reactions', jsonParser, ReactionsController.add_user_reaction)
 router.put('/api/reactions/:id', jsonParser, ReactionsController.edit_reaction)
 router.delete('/api/reactions/:id', ReactionsController.delete_reaction)
 

@@ -1,4 +1,7 @@
-import { CreateReactionDto } from '#dtos/reaction/input.dto.js'
+import {
+  CreateReactionServiceDto,
+  EditReactionServiceDto,
+} from '#dtos/reaction/input.dto.js'
 import { reactionModel } from '#models/reaction/model.js'
 import { ReactionModel } from '#models/reaction/types.js'
 import { withPagination } from '#shared/lib/withPagination.js'
@@ -11,7 +14,7 @@ class ReactionsService {
     return withPagination(reactions)
   }
 
-  static create_reaction = async (dto: CreateReactionDto) => {
+  static create_reaction = async (dto: CreateReactionServiceDto) => {
     const reaction = await reactionModel.create(dto)
     reaction.save()
 
@@ -23,7 +26,7 @@ class ReactionsService {
     return reaction
   }
 
-  static edit_reaction = async (id: string, dto: CreateReactionDto) => {
+  static edit_reaction = async (id: string, dto: EditReactionServiceDto) => {
     const reaction = await reactionModel.findByIdAndUpdate(id, dto)
     return reaction
   }

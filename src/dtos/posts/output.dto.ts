@@ -1,4 +1,5 @@
 import { ReactionDto } from '#dtos/reaction'
+import { ReactionModel } from '#models/reaction'
 import { UserDto } from '../user'
 
 export interface PostResponseDto {
@@ -7,7 +8,12 @@ export interface PostResponseDto {
   description: string
   date: string
   views: number
-  reactions: ReactionDto[]
+  reaction: ReactionModel | null
+  reactions: {
+    likes: number
+    dislikes: number
+    reactions: ReactionDto[]
+  }
   author: UserDto
 }
 

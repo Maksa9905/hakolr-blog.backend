@@ -2,10 +2,10 @@ import { CreatePostDto, GetPostsParams } from '#dtos/posts'
 import { PopulatedPostModel, PostModel, postModel } from '#models/posts'
 import { withPagination } from '#shared/lib/withPagination.ts'
 import { MongoDocument } from '#shared/types'
-import { mapPosts } from './mappers'
+import { mapPost, mapPosts } from './mappers'
 
 export class PostsService {
-  static get_posts = async (params: GetPostsParams) => {
+  static get_posts = async (params: GetPostsParams, userId: string) => {
     const { page, limit, ...restParams } = params
     const posts = (await postModel
       .find(restParams)
@@ -13,15 +13,17 @@ export class PostsService {
       .populate('reactions')
       .populate('authorId')) as MongoDocument<PopulatedPostModel>[]
 
-    return withPagination(mapPosts(posts), page, limit)
+    return withPagination(await mapPosts(posts, userId), page, limit)
   }
 
-  static get_post = async (id: string) => {
+  static get_post = async (id: string, userId: string) => {
     const post = (await postModel
       .findById(id)
-      .lean()) as MongoDocument<PostModel> | null
+      .lean()
+      .populate('authorId')
+      .populate('reactions')) as MongoDocument<PopulatedPostModel> | null
 
-    return post
+    return post ? await mapPost(post, userId) : null
   }
 
   static delete_post = async (id: string) => {
