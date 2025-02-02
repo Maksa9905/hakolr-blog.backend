@@ -9,6 +9,7 @@ const envConfig = dotEnv.config()
 import auth_router from '#routes/auth'
 import users_router from '#routes/users'
 import posts_router from '#routes/posts'
+import reactions_router from '#routes/reactions'
 
 const databaseURI = process.env.DATABASE_URI
 const cookieSecretKey = process.env.COOKIE_SECRET_KEY
@@ -30,6 +31,7 @@ if (databaseURI) {
   app.use(auth_router)
   app.use(posts_router)
   app.use(users_router)
+  app.use(reactions_router)
 
   app.listen(port, () => {
     console.log(`Hakolr-blog app listening on port ${port}`)
