@@ -6,17 +6,6 @@ import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
 class ReactionsController {
-  static create_reaction = ControllerUtils.create(
-    ReactionsService.create_reaction,
-    createReactionZodSchema,
-  )
-
-  static delete_reaction = ControllerUtils.delete(
-    ReactionsService.delete_reaction,
-  )
-
-  static edit_reaction = ControllerUtils.update(ReactionsService.edit_reaction)
-
   static get_reactions = ControllerUtils.get(ReactionsService.get_reactions)
 
   static add_user_reaction = async (
@@ -40,7 +29,7 @@ class ReactionsController {
         }
       } else {
         try {
-          await ReactionsService.delete_reaction(body._id)
+          await ReactionsService.delete_reaction(body._id, userId)
           res.send({ success: 'Reaction deleted' })
           return
         } catch (error) {

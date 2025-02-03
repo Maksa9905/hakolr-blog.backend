@@ -21,14 +21,24 @@ class ReactionsService {
     return reaction
   }
 
-  static delete_reaction = async (id: string) => {
-    const reaction = await reactionModel.findByIdAndDelete(id)
-    return reaction
+  static delete_reaction = async (id: string, userId: string) => {
+    const reaction = (await reactionModel.findById(
+      id,
+    )) as MongoDocument<ReactionModel> | null
+
+    if (reaction?.userId.toString() === userId) {
+      await reactionModel.findByIdAndDelete(id)
+    } else throw new Error('You cannot delete this reaction')
   }
 
   static edit_reaction = async (id: string, dto: EditReactionServiceDto) => {
-    const reaction = await reactionModel.findByIdAndUpdate(id, dto)
-    return reaction
+    const reaction = (await reactionModel.findById(
+      id,
+    )) as MongoDocument<ReactionModel> | null
+
+    if (reaction?.userId.toString() === dto.userId)
+      reactionModel.findByIdAndUpdate(id, dto)
+    else throw new Error('You cannot edit this reaction')
   }
 }
 
