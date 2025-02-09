@@ -40,6 +40,8 @@ export class PostsService {
 
     return post
   }
+
+  static get_random_post_labels = async () => {}
 }
 
 export default PostsService
