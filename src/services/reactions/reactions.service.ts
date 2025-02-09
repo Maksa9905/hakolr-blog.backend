@@ -37,7 +37,7 @@ class ReactionsService {
     )) as MongoDocument<ReactionModel> | null
 
     if (reaction?.userId.toString() === dto.userId)
-      reactionModel.findByIdAndUpdate(id, dto)
+      await reactionModel.findByIdAndUpdate(id, dto)
     else throw new Error('You cannot edit this reaction')
   }
 }
