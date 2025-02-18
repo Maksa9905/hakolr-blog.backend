@@ -1,9 +1,11 @@
-export interface UserDto {
+import { PostResponseDto } from '#dtos/posts'
+
+export interface UserResponseDto {
   _id: string
-  email: string
   name: string
+  status: string
+  avatarUrl: string
+  followed: boolean
 }
 
-export interface DetailedUserDto extends UserDto {
-  password: string
-}
+export interface DetailedUserDto extends UserResponseDto {}

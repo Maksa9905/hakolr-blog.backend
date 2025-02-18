@@ -1,3 +1,3 @@
 export { userSchema, userModel } from './model'
 
-export type { UserModel } from './types'
+export type { UserModel, PopulatedUserModel } from './types'

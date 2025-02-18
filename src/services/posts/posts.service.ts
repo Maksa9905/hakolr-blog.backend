@@ -13,6 +13,8 @@ export class PostsService {
       .populate('reactions')
       .populate('authorId')) as MongoDocument<PopulatedPostModel>[]
 
+    console.log(posts)
+
     return withPagination(await mapPosts(posts, userId), page, limit)
   }
 

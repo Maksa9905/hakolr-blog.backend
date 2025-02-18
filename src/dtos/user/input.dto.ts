@@ -11,3 +11,8 @@ export const createUserDtoSchema = z.object({
 })
 
 export type CreateUserDto = z.infer<typeof createUserDtoSchema>
+
+export interface GetSubscribersParams {
+  page: number
+  limit: number
+}
