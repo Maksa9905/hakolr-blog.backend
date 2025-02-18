@@ -5,6 +5,10 @@ export const userSchema = new Schema({
   email: String,
   name: String,
   password: String,
+  status: String,
+  avatarUrl: String,
+  followingIds: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+  followerIds: [{ type: Schema.Types.ObjectId, ref: 'User' }],
 })
 
 userSchema.virtual('posts', {

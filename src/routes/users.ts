@@ -21,6 +21,10 @@ router.use(async (req, res, next) => {
   return
 })
 
-router.get('/api/user/info', UserController.get_user)
+router.get('/api/user/info', UserController.get_user_info)
+router.get('/api/user/:id', UserController.get_user)
+router.post('/api/user/subscribe/:id', UserController.subscribe)
+router.delete('/api/user/subscribe/:id', UserController.unsubscribe)
+router.get('/api/user/:id/subscribers', UserController.get_subscribers)
 
 export default router

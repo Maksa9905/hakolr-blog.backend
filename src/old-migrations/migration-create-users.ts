@@ -1,4 +1,4 @@
-import { userSchema } from '#models/user/model.ts'
+import { userModel, userSchema } from '#models/user/model.ts'
 import { UserModel } from '#models/user/types.ts'
 import { faker } from '@faker-js/faker'
 import { model, models } from 'mongoose'
@@ -17,9 +17,6 @@ mongoose
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.log(err))
 
-export const userModel =
-  models.User<UserModel> || model('User', userSchema)
-
 const createUsers = async () => {
   const users = []
 
@@ -29,6 +26,11 @@ const createUsers = async () => {
       email: faker.internet.email(),
       name: faker.internet.displayName(),
       password: faker.internet.password(),
+      status: faker.lorem.sentence(),
+      posts: [],
+      followerIds: [],
+      followingIds: [],
+      avatarUrl: 'https://imgur.com/a/LZmusuN',
     })
     users.push(user)
   }

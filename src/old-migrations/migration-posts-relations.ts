@@ -1,4 +1,4 @@
-import { postSchema } from '#models/posts/model.js'
+import { postModel, postSchema } from '#models/posts/model.js'
 import { PostModel } from '#models/posts/types.js'
 import { userSchema } from '#models/user/model.ts'
 import { UserModel } from '#models/user/types.ts'
@@ -19,13 +19,10 @@ mongoose
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.log(err))
 
-export const postModel =
-  models.Post<PostModel> || model('Post', postSchema)
-
 const createUsers = async () => {
   const users = []
 
-  for (let i = 0; i < 15; i++) {
+  for (let i = 0; i < 5; i++) {
     const post = new postModel({
       _id: new mongoose.Types.ObjectId(),
       title: faker.lorem.sentence(),
@@ -33,7 +30,7 @@ const createUsers = async () => {
       content: faker.lorem.sentence(),
       date: faker.date.past().toISOString(),
       views: faker.number.int(),
-      authorId: "679e549a6dad548fdca2e363",
+      authorId: '67b08bd7e028db0ffab4779a',
       reactions: [],
     })
     users.push(post)

@@ -18,7 +18,12 @@ const port = process.env.PORT || 5000
 const app = express()
 
 if (databaseURI) {
-  mongoose.connect(databaseURI)
+  try {
+    mongoose.connect(databaseURI)
+    console.log('connected to database')
+  } catch (error) {
+    console.error(error)
+  }
 
   app.use(
     cors({

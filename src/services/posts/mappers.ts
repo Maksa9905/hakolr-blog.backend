@@ -17,11 +17,14 @@ export const mapPosts = async (
       async ({
         content,
         reactions,
-        authorId: { password, ...author },
+        authorId: { password, email, followerIds, followingIds, ...author },
         ...post
       }) => ({
         ...post,
-        author,
+        author: {
+          ...author,
+          followed: !!followerIds.find((id) => id.toString() === userId),
+        },
         reaction: await reactionModel.findOne({
           postId: post._id,
           userId: userId,
@@ -43,14 +46,17 @@ export const mapPosts = async (
 export const mapPost = async (
   {
     reactions,
-    authorId: { password, ...author },
+    authorId: { password, email, followerIds, followingIds, ...author },
     ...rest
   }: MongoDocument<PopulatedPostModel>,
   userId: string,
 ): Promise<MongoDocument<DetailedPostResponseDto>> => {
   return {
     ...rest,
-    author,
+    author: {
+      ...author,
+      followed: !!followerIds.find((id) => id.toString() === userId),
+    },
     reaction: await reactionModel.findOne({
       postId: rest._id,
       userId: userId,
