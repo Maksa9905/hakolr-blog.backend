@@ -38,7 +38,7 @@ export class UsersService {
     return user ? mapUserById(user, userId) : null
   }
 
-  static subsribe = async (token: string, followingId: string) => {
+  static subsribe = async (followingId: string, token?: string) => {
     const userId = jwt.decode(token)._id
 
     await userModel
@@ -55,7 +55,7 @@ export class UsersService {
     return user
   }
 
-  static unsubscribe = async (token: string, followingId: string) => {
+  static unsubscribe = async (followingId: string, token?: string) => {
     const userId = jwt.decode(token)._id
 
     await userModel

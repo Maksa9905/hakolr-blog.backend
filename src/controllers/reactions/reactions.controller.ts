@@ -1,53 +1,28 @@
 import { EditReactionDto, createReactionZodSchema } from '#dtos/reaction'
-import { ReactionType } from '#models/reaction'
+import { TokenData } from '#models/auth/types.js'
 import ReactionsService from '#services/reactions'
-import { ControllerUtils } from '#shared/lib/ControllerUtils.js'
+import { requestWrapper } from '#shared/lib/requestWrapper.js'
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 
 class ReactionsController {
-  static get_reactions = ControllerUtils.get(ReactionsService.get_reactions)
+  static post_user_reaction = requestWrapper(
+    async (req: Request<any, any, EditReactionDto>, res: Response) => {
+      const body = req.body
 
-  static add_user_reaction = async (
-    req: Request<any, any, EditReactionDto>,
-    res: Response,
-  ) => {
-    const body = req.body
+      const token = req.headers.authorization
+      const tokenData: TokenData = jwt.decode(token)
 
-    const token = req.headers.authorization
-    const { _id: userId } = jwt.decode(token)
+      const reaction = await ReactionsService.post_user_reaction(
+        tokenData._id,
+        body.postId,
+        body.type,
+      )
 
-    if (body._id) {
-      if (body.type) {
-        try {
-          await ReactionsService.edit_reaction(body._id, { ...body, userId })
-          res.send({ success: 'Reaction edited' })
-          return
-        } catch (error) {
-          res.status(400).send({ success: 'Reaction not edited' })
-          return
-        }
-      } else {
-        try {
-          await ReactionsService.delete_reaction(body._id, userId)
-          res.send({ success: 'Reaction deleted' })
-          return
-        } catch (error) {
-          res.status(400).send({ success: 'Reaction not deleted' })
-          return
-        }
-      }
-    }
-
-    try {
-      await ReactionsService.create_reaction({ ...body, userId })
-      res.send({ success: 'Reaction created' })
+      res.status(200).send(reaction)
       return
-    } catch (error) {
-      res.status(400).send({ success: 'Reaction not created' })
-      return
-    }
-  }
+    },
+  )
 }
 
 export default ReactionsController

@@ -24,7 +24,10 @@ router.use(async (req, res, next) => {
   return
 })
 
-router.get('/api/reactions', ReactionsController.get_reactions)
-router.post('/api/reactions', jsonParser, ReactionsController.add_user_reaction)
+router.post(
+  '/api/reactions',
+  jsonParser,
+  ReactionsController.post_user_reaction,
+)
 
 export default router

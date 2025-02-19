@@ -29,6 +29,5 @@ router.get('/api/posts', PostsController.get_posts)
 router.get('/api/posts/labels', PostLabelsController.get_post_labels)
 router.get('/api/posts/:id', PostsController.get_post)
 router.post('/api/posts', jsonParser, PostsController.create_post)
-router.delete('/api/posts/:id', PostsController.delete_post)
 
 export default router
