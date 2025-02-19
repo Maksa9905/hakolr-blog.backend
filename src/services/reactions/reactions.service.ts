@@ -1,34 +1,31 @@
-import {
-  CreateReactionServiceDto,
-  EditReactionServiceDto,
-} from '#dtos/reaction/input.dto.js'
+import { EditReactionServiceDto } from '#dtos/reaction/input.dto.js'
 import { reactionModel } from '#models/reaction/model.js'
-import { ReactionModel } from '#models/reaction/types.js'
-import { withPagination } from '#shared/lib/withPagination.js'
+import { ReactionModel, ReactionType } from '#models/reaction/types.js'
 import { MongoDocument } from '#shared/types/types.js'
 
 class ReactionsService {
-  static get_reactions = async () => {
-    const reactions =
-      (await reactionModel.find()) as MongoDocument<ReactionModel>[]
-    return withPagination(reactions)
-  }
+  static post_user_reaction = async (
+    userId: string,
+    postId: string,
+    type: keyof typeof ReactionType | null,
+  ) => {
+    if (type) {
+      const reaction = await reactionModel.findOneAndUpdate(
+        { userId, postId },
+        { type },
+      )
 
-  static create_reaction = async (dto: CreateReactionServiceDto) => {
-    const reaction = await reactionModel.create(dto)
-    reaction.save()
+      if (reaction) return reaction
 
+      const newReaction = await reactionModel.create({ userId, postId, type })
+      return newReaction
+    }
+
+    const reaction = await reactionModel.findOneAndDelete({
+      userId,
+      postId,
+    })
     return reaction
-  }
-
-  static delete_reaction = async (id: string, userId: string) => {
-    const reaction = (await reactionModel.findById(
-      id,
-    )) as MongoDocument<ReactionModel> | null
-
-    if (reaction?.userId.toString() === userId) {
-      await reactionModel.findByIdAndDelete(id)
-    } else throw new Error('You cannot delete this reaction')
   }
 
   static edit_reaction = async (id: string, dto: EditReactionServiceDto) => {
