@@ -2,7 +2,7 @@ import { UserAuthenticationInfo } from '#dtos/auth'
 import { CreateUserDto } from '#dtos/user'
 import { TokenData } from '#models/auth'
 import { userModel } from '#models/user'
-import { dayMilliseconds } from '#shared/lib/consts.ts'
+import { DEFAULT_AVATAR_URL, dayMilliseconds } from '#shared/lib/consts.ts'
 import { Request, Response } from 'express'
 import jwt from 'jsonwebtoken'
 import mongoose from 'mongoose'
@@ -55,13 +55,19 @@ class AuthService {
   }
 
   static register = async (dto: CreateUserDto) => {
+    const userExists = await userModel.findOne({ email: dto.email })
+    if (userExists) return null
+
     const user = await userModel.create({
       _id: new mongoose.Types.ObjectId(),
       email: dto.email,
       name: dto.name,
       password: dto.password,
+      avatarUrl: DEFAULT_AVATAR_URL,
+      status: '',
     })
-    user.save()
+
+    await user.save()
 
     return user
   }
