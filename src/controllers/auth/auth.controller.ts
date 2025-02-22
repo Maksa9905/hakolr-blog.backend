@@ -52,6 +52,11 @@ class AuthController {
     }
 
     const response = await AuthService.register(req.body)
+    if (response === null) {
+      res.status(400).send('User already exists')
+      return
+    }
+
     res.send(response)
     return
   })
